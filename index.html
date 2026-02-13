@@ -153,7 +153,7 @@
   </style>
 </head>
 <body>
-  <!-- Hero -->
+  <!-- Sorpresa -->
   <header class="container">
     <h1 class="title">Para: <span id="her-name">Mi Amor</span> ✨</h1>
     <p class="subtitle">Una pequeña sorpresa hecha con mucho cariño. Haz clic cuando estés lista 💌</p>
@@ -178,6 +178,29 @@
       </div>
     </section>
 
+    <!-- Tiempo juntos -->
+<section class="section" id="section-time">
+  <h2>Tiempo que llevamos juntos ⏳💕</h2>
+  <div class="countdown">
+    <div class="cd-box">
+      <div class="cd-num" id="daysTogether">0</div>
+      <div class="cd-label">Días</div>
+    </div>
+    <div class="cd-box">
+      <div class="cd-num" id="hoursTogether">00</div>
+      <div class="cd-label">Horas</div>
+    </div>
+    <div class="cd-box">
+      <div class="cd-num" id="minutesTogether">00</div>
+      <div class="cd-label">Minutos</div>
+    </div>
+    <div class="cd-box">
+      <div class="cd-num" id="secondsTogether">00</div>
+      <div class="cd-label">Segundos</div>
+    </div>
+  </div>
+</section>
+    
     <!-- Razones -->
     <section class="section" id="section-reasons">
       <h2>Razones por las que te amo 💘</h2>
@@ -201,7 +224,7 @@
     </section>
     
 
-    <!-- Galería (coloca tus fotos reemplazando los src) -->
+    <!-- Galería -->
     <section class="section" id="section-gallery">
       <h2>Nuestros Momentos 📸</h2>
       <div class="gallery">
@@ -303,68 +326,10 @@
   song.play().catch(()=>{});
 });
 
-
     // Música
     document.getElementById('playMusic').addEventListener('click', ()=>{
       const song = document.getElementById('song');
       if(song.paused) song.play(); else song.pause();
-    });
-
-
-
-    function parseDMY(str){
-      // Acepta "dd/mm/aaaa" o "dd/mm/aaaa hh:mm"
-      const [datePart, timePart] = str.split(' ');
-      const [d,m,y] = datePart.split('/').map(n=>parseInt(n,10));
-      let h=0, min=0;
-      if(timePart){ [h,min] = timePart.split(':').map(n=>parseInt(n,10)); }
-      return new Date(y, m-1, d, h, min, 0);
-    }
-
-    function updateCountdown(){
-      const now = new Date();
-      const diff = targetDate - now;
-      const dEl = document.getElementById('d');
-      const hEl = document.getElementById('h');
-      const mEl = document.getElementById('m');
-      const sEl = document.getElementById('s');
-
-      if(diff <= 0){
-        dEl.textContent=hEl.textContent=mEl.textContent=sEl.textContent='0';
-        return;
-      }
-      const s = Math.floor(diff/1000);
-      const days = Math.floor(s / 86400);
-      const hours = Math.floor((s % 86400) / 3600);
-      const mins = Math.floor((s % 3600) / 60);
-      const secs = s % 60;
-      dEl.textContent = days;
-      hEl.textContent = hours.toString().padStart(2,'0');
-      mEl.textContent = mins.toString().padStart(2,'0');
-      sEl.textContent = secs.toString().padStart(2,'0');
-    }
-    setInterval(updateCountdown, 1000); updateCountdown();
-
-    // Personalizador simple
-    const herNameEl = document.getElementById('her-name');
-    const myNameEl = document.getElementById('my-name');
-    const letterEl  = document.getElementById('letter-text');
-    const footerName = document.getElementById('footer-name');
-
-    document.getElementById('applyChanges').addEventListener('click', ()=>{
-      const newHer = document.getElementById('input-her-name').value.trim();
-      const newMy  = document.getElementById('input-my-name').value.trim();
-      const newMsg = document.getElementById('input-letter').value.trim();
-      const newDate= document.getElementById('input-date').value.trim();
-
-      if(newHer){ herNameEl.textContent=newHer; }
-      if(newMy){ myNameEl.textContent=newMy; footerName.textContent=newMy; }
-      if(newMsg){ letterEl.textContent=newMsg; }
-      if(newDate){
-        try{ targetDate = parseDMY(newDate); updateCountdown(); }
-        catch(e){ alert('Revisa el formato de fecha (dd/mm/aaaa hh:mm opcional)'); }
-      }
-      dropConfetti(innerWidth/2, innerHeight/4);
     });
 
     // Confetti al hacer click en cualquier parte
@@ -372,9 +337,38 @@
       if(e.target.closest('#openSurprise') || e.target.closest('#applyChanges')) return; // ya se arroja arriba
       dropConfetti(e.clientX, e.clientY);
     });
+    
+    // ================= TIEMPO JUNTOS =================
+
+// Fecha de inicio: 25 Enero 2025 5:45 PM
+const startDate = new Date(2025, 0, 25, 17, 45, 0); 
+// (Mes 0 = Enero en JavaScript)
+
+function updateTimeTogether(){
+  const now = new Date();
+  const diff = now - startDate;
+
+  if(diff <= 0) return;
+
+  const seconds = Math.floor(diff / 1000);
+  const days = Math.floor(seconds / 86400);
+  const hours = Math.floor((seconds % 86400) / 3600);
+  const minutes = Math.floor((seconds % 3600) / 60);
+  const secs = seconds % 60;
+
+  document.getElementById("daysTogether").textContent = days;
+  document.getElementById("hoursTogether").textContent = hours.toString().padStart(2,'0');
+  document.getElementById("minutesTogether").textContent = minutes.toString().padStart(2,'0');
+  document.getElementById("secondsTogether").textContent = secs.toString().padStart(2,'0');
+}
+
+setInterval(updateTimeTogether, 1000);
+updateTimeTogether();
+
   </script>
 </body>
 </html>
+
 
 
 
